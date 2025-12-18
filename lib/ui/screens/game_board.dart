@@ -20,6 +20,8 @@ class _GameBoardState extends State<GameBoard> {
   int counter = 0;
 
   late Timer timer;
+  late String firsPlayerSymbol;
+  late String secondPlayerSymbol;
   @override
   void initState() {
     timer = Timer.periodic(Duration(seconds: 1), (time) {
@@ -30,6 +32,8 @@ class _GameBoardState extends State<GameBoard> {
 
   @override
   Widget build(BuildContext context) {
+    firsPlayerSymbol = ModalRoute.of(context)!.settings.arguments as String;
+    secondPlayerSymbol = firsPlayerSymbol == 'x' ? 'o' : 'x';
     return ScaffoldWidget(
       child: Column(
         children: [
@@ -185,7 +189,7 @@ class _GameBoardState extends State<GameBoard> {
       return;
     }
 
-    board[index] = counter.isEven ? 'o' : 'x';
+    board[index] = counter.isEven ? firsPlayerSymbol : secondPlayerSymbol;
 
     if (CheckBoard()) {
       clearBoard();
@@ -200,7 +204,7 @@ class _GameBoardState extends State<GameBoard> {
   }
 
   bool CheckBoard() {
-    String symbol = counter % 2 == 0 ? 'o' : 'x';
+    String symbol = counter.isEven ? firsPlayerSymbol : secondPlayerSymbol;
     //rows
     if (board[0] == symbol && board[1] == symbol && board[2] == symbol) {
       return true;
